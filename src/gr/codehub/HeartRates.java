@@ -10,11 +10,21 @@ public class HeartRates {
     private int year;
 
 
-    public HeartRates(String firstname, String lastname, int day, int month, int year) {
+    public HeartRates(String firstname, String lastname, int day, int month, int year) throws WrongMonthException{
         this.firstname = firstname;
         this.lastname = lastname;
-        this.day = day;
-        this.month = month;
+        if (day>0 && day<=31) {
+            this.day = day;
+        }
+        else {
+            this.day = -99999;
+        }
+        if(month>0 && month <=12) {
+            this.month = month;
+        }
+        else {
+            throw new WrongMonthException("Wrong Month or Day" + month );
+        }
         this.year = year;
     }
 
@@ -39,7 +49,7 @@ public class HeartRates {
     }
 
     public void setDay(int day) {
-        if (day>0) {
+        if ((day>0) && (day<31)) {
             this.day = day;
         }
         else {
@@ -51,8 +61,16 @@ public class HeartRates {
         return month;
     }
 
-    public void setMonth(int month) {
-        this.month = month;
+    public void setMonth(int month) throws WrongMonthException {
+
+        if(month>0 && month<12) {
+            this.month = month;
+        }
+        else {
+            throw new WrongMonthException("Wrong Month" + month );
+        }
+
+
     }
 
     public int getYear() {
@@ -69,13 +87,13 @@ public class HeartRates {
         return age;
     }
 
-    public static String CalculateMaxHeartRate() {
-
-        return null;
+    public int CalculateMaxHeartRate(int age) {
+        return 220 - age;
     }
-    public static String CalculateTargetHeartRate() {
-
-        return null;
+    public String CalculateTargetHeartRate(int maxHeartRate) {
+        double firstRate = maxHeartRate * (50.0/100);
+        double secondRate = maxHeartRate * (85.0/100);
+        return firstRate + " - " +secondRate;
     }
 
     @Override
